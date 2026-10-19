@@ -297,7 +297,7 @@ This roadmap's own targets are cited by subsection.
 | Affinoid spectra and spaces over a field | `TauCetiRoadmap.AdicSpacesPartII.AdicSpace.Affinoid.spa`, `AdicSpace.fieldAffinoid`, `AdicSpace.AdicOver`, `RigidSpace`, `TauCetiRoadmap/AdicSpacesPartII/Suggested.lean` | P8 analytification and finite rigid quotients use these spectra, rigid spaces and locally finite type adic spaces over the complete nonarchimedean field. |
 | Profinite flat coefficient modules | `TauCetiRoadmap.AdicSpacesPartIV.Huber.IsProfiniteFlat`, `TauCetiRoadmap/AdicSpacesPartIV/Suggested.lean` | P9's mixed completed tensors retain flatness and the compact Hausdorff linear module topology supplied by R5. |
 | Affinoid restriction and represented towers | `PerfectoidSpace.IsZariskiClosedEmbedding`, `PerfectoidSpace.GoodTower.represents`, this roadmap's P8.14 and P8.19 (README only) | Checks `IsZariskiClosedEmbedding.base_change_affinoid` and `GoodTower.universal` evaluate the predicate and the structure field. |
-| Integral fixed elements and characteristic-p localization | `invariantPair`, `TauCetiRoadmap/PerfectoidTowers/Suggested.lean`; `Perfectoid.PairCat.invariants`, `Perfectoid.rational_invariants_perfectoid`, this roadmap's P8.4–P8.5 (README only) | Checks `invariants_pair_plus` and `rational_invariants_characteristic_p` use the comap plus ring and the general localization comparison; the membership `example` after `invariantPair` states the first. |
+| Integral fixed elements and characteristic-p localization | `invariantPair`, `TauCetiRoadmap/PerfectoidTowers/Suggested.lean`; `Perfectoid.PairCat.invariants`, `Perfectoid.rational_invariants_perfectoid`, this roadmap's P8.4–P8.5 (README only) | Checks `invariants_pair_plus` and `rational_invariants_characteristic_p` use the comap plus ring and the general localization comparison; the first is specified by the comap defining `invariantPair`. |
 | Affinoid sheaf equalizers | `Perfectoid.TorsorDescent.WeightExtension.structureSheafEqualizer`, `.integralStructureSheafEqualizer`, this roadmap's P9.11 (README only) | Check `WeightExtension.rationalSectionsEqualizer` combines their conclusions on an affinoid open. |
 | Regular-element coefficient sequence | `Module.Flat.isSMulRegular_of_isRegular`, `Mathlib/RingTheory/Flat/TorsionFree.lean`; `LinearMap.exact_iff`, `Mathlib/Algebra/Exact/Basic.lean`; `Submodule.ideal_span_singleton_smul`, `Mathlib/RingTheory/Ideal/Operations.lean` | Check `coefficient_change_regular` applies flatness for injectivity and the supplied kernel equality for exactness. The sheaf and derived comparisons remain P9 targets. |
 | Sectionwise inverse limits | `CategoryTheory.Sheaf.createsLimits`, `Mathlib/CategoryTheory/Sites/Limits.lean`; `CategoryTheory.Limits.evaluationPreservesLimits`, `Mathlib/CategoryTheory/Limits/FunctorCategory/Basic.lean`; `CategoryTheory.preservesLimitIso`, `Mathlib/CategoryTheory/Limits/Preserves/Limits.lean:54` | Check `higher_inverse_limits_sections` gives the section comparison for any inverse system of module sheaves. P9 supplies almost vanishing of positive derived limits and higher cohomology. |
@@ -425,16 +425,19 @@ The declarations of `Suggested.lean` are:
 | `isRingOfIntegralElements_comap_fixedPoints` | theorem | P8.1 |
 | `invariantPair` | def | P8.1 |
 | `invariant_spectrum_homeomorphism` | theorem | P8.2 |
-| `invariants_perfectoid` | theorem | P8.4 |
+| `invariants_perfectoid`, `invariants_perfectoid_char_p` | theorems | P8.4 |
 | `IsCategoricalQuotient` | structure | P8.6 |
 | `exists_isCategoricalQuotient_of_invariant_cover` | theorem | P8.7, P8.8 |
 | `isTateAffinoidModel`, `isTateAffinoid` | def, abbrev | P8.9 |
 | `exists_isCategoricalQuotient_of_invertible_order` | theorem | P8.9 |
+| `isTateAffinoid_zero`, `isTateAffinoid_not_padic_integers` | boundary theorems | P8.9 |
 | `MulAction.IsGClean`, `MulAction.exists_isGClean` | structure, theorem | P8.13 |
 | `exists_perfectoidization`, `integral_extension_of_perfectoid_pair` | theorems | P8.18 |
 | `CompactCoefficients.exists_continuous_lift` | theorem | P9.0 |
 | `finite_projective_sections_descent` | theorem | P9.8 |
+| `continuousInhomogeneousCochains_zero`, `continuousInhomogeneousCochains_one`, `cech_operators_without_joint_continuity` | theorems | P9.5 |
 | `twistedInvariants` | def | P9.9 |
+| `twistedInvariants_coboundary` | theorem | P9.9 |
 | `finite_character_comparison`, `finite_character_comparison_linear`, `finite_character_comparison_restriction`, `finite_character_comparison_coefficient_change` | theorems | P9.10 |
 | `integral_matrix_coboundary_effectivity` | theorem | P9.13 |
 
@@ -453,13 +456,6 @@ and consequences. None counts toward a definition's three discriminating Checks.
 | `nonfaithful_base_change`, `cech_trivial_two_terms`, `pullback_two_terms`, `twisted_inverse_two_terms`, `matrix_rank_two`, `averaging_two_terms`, `derived_two_term_tor`, `mixed_completion_diagonal`, `integral_matrix_nonunit`, `matrix_rank_zero` | Algebraic or coefficient-array computations; they do not instantiate the descent, cochain, twisted-sheaf, or completed-tensor constructions. |
 | `coefficient_change_regular`, `coefficient_change_unit`, `coefficient_change_zero_not_regular`, `coefficient_change_two` | Library regularity and exactness calculations, without the derived comparison. |
 | `completedScalar_one`, `completedScalar_uniformizer`, `integralToRational_one`, `scalarModuleSheaf_one`, `scalarModuleSheaf_two` | Laws valid for every ring homomorphism or module action; they do not determine the completion coordinates or the specified scalar map. |
-
-The norm examples `norm_trivialGroup`, `norm_zero_one`, and
-`invariants_trivialAction` evaluate `normPseudoUniformizer` itself.
-Likewise `invariants_trivialGroup`, `invariants_toSubring_eq_fixedPoints`, and
-`invariants_swap_prod` retain the plus ring of `invariantPair`.
-These are Checks on their respective constructions, even where their proofs
-use a library law such as `one_smul`.
 
 ## Layer P8: finite quotients and closed perfectoid loci in towers
 
@@ -498,8 +494,7 @@ In `affinoid_perfectoid_quotient` the resulting pullback on sections is
 left `G`-action uses the opposite group. For a right action on a space,
 `MulAction.IsGClean` uses the left action of the opposite group. **Auxiliary calculation `action_order_two_terms`:** for the permutations
 `σ = (0 1)` and `τ = (1 2)`, `(στ)(0) = 1` and `(τσ)(0) = 2`; thus successive pullbacks
-reverse composition. This computation is also a Lean `example`, stated after
-`IsCategoricalQuotient`.
+reverse composition.
 
 ### P8.1 the invariant Huber pair
 
@@ -590,12 +585,9 @@ Lean: `normPseudoUniformizer`, `isPseudoUniformizer_normPseudoUniformizer`,
 `FixedPoints.subring A G` (closedness and completeness in clause (i)), `isTateRing_fixedPoints`
 (clause (i)), `isRingOfIntegralElements_comap_fixedPoints` (clause (iii)) and `invariantPair`.
 Clause (iii), and with it the pair `invariantPair`, does not use the stability `g(A⁺) = A⁺`;
-clause (iv) and the spectrum theorem of P8.2 do. The `example`s after `normPseudoUniformizer`
-and `invariantPair` state the value `∏ g, g • a` of the norm, the fixed-element clause
-`N(ϖ) = ϖ^{|G|}` of `invariants_trivialAction`, `norm_zero_one`, the plus-ring membership of
-`invariants_pair_plus`, the carrier clause `A^G = A` of `invariants_trivialGroup` for a
-one-element group, and `invariants_swap_prod`. Clauses (ii) and (iv), the maps
-`invariantPair.map` and `invariantPair.subgroup`, the remaining Checks and
+clause (iv) and the spectrum theorem of P8.2 do. The norm evaluations, the plus-ring
+membership Check `invariants_pair_plus`, the remaining Checks, clauses (ii) and (iv), the maps
+`invariantPair.map` and `invariantPair.subgroup`, and
 *extensions-of-valuations-are-conjugate* are README only.
 
 ### P8.2 the orbit space of the adic spectrum
@@ -737,9 +729,10 @@ sequences in [ECD] Definition 3.9 and Lemma 3.10, p. 16, and Lemma 3.11, p. 17.
   exactly when its image belongs to `A⁺`, by the comap definition in
   `PairCat.invariants` and `invariantPair`.
 
-Lean: `invariants_perfectoid`, with no hypothesis on `|G|`. The `example` after it states the
-perfectness clause of `invariants_perfectoid_char_p`: in characteristic `p` the invariants form a
-perfect ring. `Perfectoid.tilt_invariants`, *frobenius-on-invariants-of-p-group*, the bundled
+Lean: `invariants_perfectoid`, carrying the hypothesis that `A` is perfectoid and no
+hypothesis on `|G|`, and the named theorem
+`invariants_perfectoid_char_p`: in characteristic `p` the invariants form a perfect ring.
+`Perfectoid.tilt_invariants`, *frobenius-on-invariants-of-p-group*, the bundled
 pair `Perfectoid.PairCat.invariants` with the tilted action, and the remaining Checks are README
 only.
 
@@ -884,10 +877,9 @@ pre-adic space, that `q` is `G`-invariant, that every `G`-invariant morphism of 
 out of `X` factors uniquely through `q`, and that `q` is a quotient map on points whose fibres are
 the orbits. Morphisms of Tau Ceti pre-adic spaces are the morphisms of `V` between such objects,
 so this is the universal property of *categorical-quotient* tested against pre-adic spaces. The
-`example`s after it state `quotient_left_action_mul` on the pre-adic carrier,
-`action_order_two_terms`, the trivial-action clause of `quotient_trivialAction` (the identity is a
-categorical quotient), and a negative control: if some `ρ g ≠ 1`, the identity is not a
-categorical quotient. The construction `VRingedSpace.quotient` on the carrier
+`example`s after it state the trivial-action clause of `quotient_trivialAction`
+(the identity is a categorical quotient), and a negative control: if some `ρ g ≠ 1`, the
+identity is not a categorical quotient. The construction `VRingedSpace.quotient` on the carrier
 `VRingedSpace.Object`, `VRingedSpace.ofAdicSpace`, `PerfectoidSpace.toVRingedSpace` and the
 remaining Checks are README only.
 
@@ -996,7 +988,7 @@ Tau Ceti `TauCeti.Huber.PairOfDefinition.completionLocObj`.
 - `isTateAffinoid_le_isAffinoid` (compatibility) — every Tate affinoid is affinoid in Tau Ceti's
   sense (`PreAdicSpace.isAffinoid`).
 - `isTateAffinoid_spa` (compatibility) — `Spa(A, A⁺)` of a Tate–Huber pair is a Tate affinoid.
-- `isTateAffinoid_padic_field` (computation) — `Spa(ℚ_p,ℤ_p)` is a Tate affinoid:
+- *isTateAffinoid_padic_field* (computation) — `Spa(ℚ_p,ℤ_p)` is a Tate affinoid:
   its ring of definition is `ℤ_p` with ideal `(p)`, and `p` is a topologically nilpotent unit.
 - `isTateAffinoid_zero` (degenerate) — the zero pair gives the empty Tate affinoid;
   its unique element `0 = 1` is a topologically nilpotent unit, and its spectrum is empty.
@@ -1008,12 +1000,11 @@ Lean: `isTateAffinoidModel` (pre-adic spaces of the form `Spa(A, A⁺)` with `A`
 isomorphism closure `isTateAffinoid`, and `exists_isCategoricalQuotient_of_invertible_order` (for
 an adic space with `|G|` invertible in global sections and a cover by `G`-stable open Tate
 affinoids, the categorical quotient exists and is adic, and every `G`-stable open Tate affinoid is
-the full preimage of an open Tate affinoid of the quotient). The `example`s after
-`isTateAffinoid` state `isTateAffinoid_le_isAffinoid`, `isTateAffinoid_spa`,
-`isTateAffinoid_padic_field`, `isTateAffinoid_zero` on the concrete zero ring `PUnit`,
-and `isTateAffinoid_not_padic_integers` (presented by any pair on `ℤ_p` and
-pair of definition); the assertion that `Spa(ℤ_p,ℤ_p)` is affinoid and
-*rational-invariants-order-invertible* are README only.
+the full preimage of an open Tate affinoid of the quotient). The two proved `example`s state
+`isTateAffinoid_le_isAffinoid` and `isTateAffinoid_spa`. The named boundary theorems are
+`isTateAffinoid_zero` on the zero ring `PUnit` and `isTateAffinoid_not_padic_integers`
+(presented by any pair on `ℤ_p` and pair of definition). The p-adic-field Check, the assertion
+that `Spa(ℤ_p,ℤ_p)` is affinoid and *rational-invariants-order-invertible* are README only.
 
 ### P8.10 rigid quotients under an invariant affinoid cover
 
@@ -1119,8 +1110,9 @@ local compactness; when a locally spectral space is Hausdorff, it is locally com
 
 **Checks.**
 
-The clean-neighbourhood Check labels are set in italics. `Suggested.lean` states the first three
-as unnamed `example`s after `MulAction.exists_isGClean`; the others are README only.
+The clean-neighbourhood Check labels are set in italics. `Suggested.lean` proves the overlap
+and trivial-action Checks as `example`s after `MulAction.exists_isGClean`; the others are
+README only.
 
 - *isGClean_empty* (negative control) — the empty set is invariant and has disjoint
   translates, but is not a neighbourhood of `x`; the Lean predicate rejects it.
@@ -2428,11 +2420,11 @@ local naturality comparison ([CHJ] Remark 2.25, p. 20, for the Čech constructio
   both geometric Čech comparisons and the shared homogeneous comparison
   commute with that map in every degree.
 
-Lean: the three anonymous `example`s in the continuous-coefficient section state
-continuity in Checks `continuousInhomogeneousCochains_zero` and
-`continuousInhomogeneousCochains_one`, and the failure in
-`cech_operators_without_joint_continuity`. The geometric targets, shared-model
-re-exports and remaining Checks are README only.
+Lean: the named theorems `continuousInhomogeneousCochains_zero` and
+`continuousInhomogeneousCochains_one` give continuity of the first two differential formulas.
+The named boundary theorem `cech_operators_without_joint_continuity` gives its failure without
+joint continuity. The geometric targets, shared-model re-exports and remaining Checks are
+README only.
 
 ### P9.6 descent of functions along a tower
 
@@ -2824,11 +2816,11 @@ a profinite flat `O`-module `M`, and an `O`-linear group action on `E`. The map
 fixed mixed tensors as its image. The rational mixed-tensor statement above still
 uses localization of an open bounded lattice, not a Banach tensor of `M[1/p]`.
 
-Lean: `twistedInvariants`. The `example`s after it state the membership formula, the algebraic
-form of `twisted_trivial_cocycle` (the trivial cocycle gives the invariants), the coboundary
-clause of `twisted_coboundary` (for `c(γ) = F/γ(F)`, `f` is twisted invariant iff `F⁻¹f` is
-invariant) and `twisted_non_cocycle`. `TwistedCharacterSheaf` with its sheaf constructions, the
-completed-tensor comparisons and the remaining Checks are README only.
+Lean: `twistedInvariants`, the proved `example` identifying the trivial-cocycle invariants,
+and `twistedInvariants_coboundary`, the affine clause of `twisted_coboundary`: for
+`c(γ) = F/γ(F)`, `f` is twisted invariant exactly when `F⁻¹f` is invariant.
+`TwistedCharacterSheaf` with its sheaf constructions, the completed-tensor comparisons and
+the remaining Checks are README only.
 
 ### P9.10 finite-level comparison and local freeness
 
@@ -3108,9 +3100,8 @@ monodromy; `FiniteTowerCoefficients_torsionfree` excludes a `ℤ_p` stage.
 
 Lean: `finite_character_comparison` (multiplication by `u`, additively),
 `finite_character_comparison_linear`, `finite_character_comparison_restriction` and
-`finite_character_comparison_coefficient_change`; the `example` after the last states the
-two-factor swap Check. `finite_character_line`, the sheaf statements, the gluing and
-reconstruction outputs, approximation of units, the integral counit,
+`finite_character_comparison_coefficient_change`. `finite_character_line`, the sheaf statements,
+the gluing and reconstruction outputs, approximation of units, the integral counit,
 coefficient change and the inverse-limit statements are README only.
 
 ### P9.11 sheaf equalizers after coefficient base change

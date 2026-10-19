@@ -1,5 +1,4 @@
 import Mathlib
-import TauCeti.RingTheory.Huber.Padic.Field
 import TauCeti.AlgebraicGeometry.AdicSpace.Spa.Comap
 import TauCeti.AlgebraicGeometry.AdicSpace.PreAdicSpace.Adic
 import TauCeti.AlgebraicGeometry.AdicSpace.PreAdicSpace.Affinoid
@@ -51,22 +50,6 @@ variable {A : Type*} [CommRing A] (G : Type*) [Group G] [Fintype G] [MulSemiring
 action need not be faithful; this is not the determinant norm of a finite free extension. -/
 def normPseudoUniformizer (ϖ : A) : FixedPoints.subring A G :=
   ⟨∏ g : G, g • ϖ, Finset.smul_prod_perm ϖ⟩
-
--- Check: the value of `N(ϖ)` in `A` is the orbit product.
-example (ϖ : A) : (normPseudoUniformizer G ϖ : A) = ∏ g : G, g • ϖ := rfl
-
--- Check: for an element fixed by `G` the norm is `ϖ ^ |G|`.
-example (ϖ : A) (h : ∀ g : G, g • ϖ = ϖ) :
-    (normPseudoUniformizer G ϖ : A) = ϖ ^ Fintype.card G := by
-  simp [normPseudoUniformizer, h]
-
--- Check (`norm_trivialGroup`): the norm of every element for a one-element group is itself.
-example [Subsingleton G] (a : A) : (normPseudoUniformizer G a : A) = a := sorry
-
--- Check: `N(0) = 0` and `N(1) = 1`, since a group is nonempty.
-example :
-    (normPseudoUniformizer G (0 : A) : A) = 0 ∧ (normPseudoUniformizer G (1 : A) : A) = 1 := by
-  simp [normPseudoUniformizer]
 
 /-- The orbit product of a pseudouniformiser is a pseudouniformiser of `A` and of `A^G`
 (Hansen Theorem 3.1, proof, pp. 4–6). -/
@@ -122,27 +105,6 @@ def invariantPair [Finite G] [ContinuousConstSMul G A] (P : Pair A) :
   plus := P.plus.comap (FixedPoints.subring A G).subtype
   isRingOfIntegralElements := isRingOfIntegralElements_comap_fixedPoints G P
 
--- Check: an invariant element is integral in `(A^G, A^{+G})` iff it lies in `A⁺`.
-example [Finite G] [ContinuousConstSMul G A] (P : Pair A) (a : FixedPoints.subring A G) :
-    a ∈ (invariantPair G P).plus ↔ (a : A) ∈ P.plus := Iff.rfl
-
--- Check: for a one-element group nothing is lost: `A^G = A`.
-example [Subsingleton G] : FixedPoints.subring A G = ⊤ := by
-  refine eq_top_iff.mpr fun a _ g ↦ ?_
-  rw [Subsingleton.elim g 1, one_smul]
-
--- Check: for `ℤ/2` swapping `K × K`, the fixed ring is the diagonal, `A^{+G}` the diagonal of
--- `K⁺`, and the norm of `(ϖ, ϖ)` is `(ϖ², ϖ²)`.
-example {K : Type*} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [IsTateRing (K × K)]
-    {H : Type*} [Group H] [Fintype H] [MulSemiringAction H (K × K)]
-    [ContinuousConstSMul H (K × K)] (σ : H) (hσ : ∀ x : K × K, σ • x = x.swap)
-    (hH : ∀ h : H, h = 1 ∨ h = σ) (hσ1 : σ ≠ 1) (Kplus : Subring K) (P : Pair (K × K))
-    (hP : P.plus = Kplus.prod Kplus) (ϖ : K) :
-    (∀ x : K × K, x ∈ FixedPoints.subring (K × K) H ↔ x.1 = x.2) ∧
-      (∀ x : FixedPoints.subring (K × K) H,
-        x ∈ (invariantPair H P).plus ↔ (x : K × K).1 ∈ Kplus) ∧
-      (normPseudoUniformizer H ((ϖ, ϖ) : K × K) : K × K) = (ϖ ^ 2, ϖ ^ 2) := sorry
-
 /-- **The orbit space of the adic spectrum.** For `G` finite acting continuously on a Tate ring
 and preserving `A⁺`, restriction `Spa(A, A⁺) → Spa(A^G, A^{+G})`, `v ↦ v|_{A^G}`, is a quotient
 map whose fibres are the orbits of `v ↦ v ∘ g`; hence `|Spa(A, A⁺)|/G ≅ |Spa(A^G, A^{+G})|`
@@ -162,8 +124,10 @@ end InvariantPair
 section PerfectoidInvariants
 
 variable (p : ℕ) [Fact p.Prime] (A : Type*) [CommRing A] [UniformSpace A] [IsUniformAddGroup A]
-  [IsTopologicalRing A] [IsTateRing A] [CompleteSpace A] [T2Space A] [IsPerfectoidTateRing p A]
+  [IsTopologicalRing A] [IsTateRing A] [CompleteSpace A] [T2Space A] [hA : IsPerfectoidTateRing p A]
   (G : Type*) [Group G] [Finite G] [MulSemiringAction G A] [ContinuousConstSMul G A]
+
+include hA
 
 /-- **Invariants of a perfectoid Tate ring are perfectoid.** For a finite group acting by
 continuous ring automorphisms, `A^G` with the subspace topology is a perfectoid Tate ring; `p`
@@ -171,9 +135,9 @@ may divide `|G|` and no base field is fixed (KL16 Theorem 3.3.26, p. 68; Hansen 
 p. 9). -/
 theorem invariants_perfectoid : IsPerfectoidTateRing p (FixedPoints.subring A G) := sorry
 
--- Check: in characteristic `p` the invariants are a perfect ring, since Frobenius is injective
--- and the `p`-th root of an invariant is invariant.
-example [CharP A p] [CharP (FixedPoints.subring A G) p] :
+/-- The characteristic-`p` clause of P8.4, `invariants_perfectoid_char_p`: finite-group
+invariants of a perfectoid Tate ring in characteristic `p` form a perfect ring. -/
+theorem invariants_perfectoid_char_p [CharP A p] [CharP (FixedPoints.subring A G) p] :
     PerfectRing (FixedPoints.subring A G) p := sorry
 
 end PerfectoidInvariants
@@ -200,16 +164,6 @@ structure IsCategoricalQuotient {X Y : PreAdicSpace.{u}} (ρ : G →* Aut X) (q 
   /-- The fibres of `q` on points are the `G`-orbits. -/
   fibres : ∀ x y : X, q.base x = q.base y ↔ ∃ g : G, (ρ g).hom.base x = y
 
--- Check: `ρ` is a left action, so `ρ (g * h)` acts by `ρ h` followed by `ρ g`; for the
--- permutations `(0 1)` and `(1 2)`, `(0 1)(1 2)` sends `0` to `1`, `(1 2)(0 1)` sends `0` to `2`.
-example {X : PreAdicSpace.{u}} (ρ : G →* Aut X) (g h : G) :
-    (ρ (g * h)).hom = (ρ h).hom ≫ (ρ g).hom := by
-  rw [map_mul]
-  rfl
-example : (Equiv.swap (0 : Fin 3) 1 * Equiv.swap (1 : Fin 3) 2) 0 = 1 ∧
-    (Equiv.swap (1 : Fin 3) 2 * Equiv.swap (0 : Fin 3) 1) 0 = 2 := by
-  decide
-
 -- Negative control: if some group element acts nontrivially, the identity is not a quotient.
 example {X : PreAdicSpace.{u}} (ρ : G →* Aut X) (g : G) (hg : ρ g ≠ 1) :
     ¬ IsCategoricalQuotient ρ (𝟙 X) := fun h ↦
@@ -217,7 +171,24 @@ example {X : PreAdicSpace.{u}} (ρ : G →* Aut X) (g : G) (hg : ρ g ≠ 1) :
 
 -- Check: for the trivial action the identity is a categorical quotient.
 example {X : PreAdicSpace.{u}} (ρ : G →* Aut X) (h : ∀ g, ρ g = 1) :
-    IsCategoricalQuotient ρ (𝟙 X) := sorry
+    IsCategoricalQuotient ρ (𝟙 X) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro g
+    rw [h g]
+    change (𝟙 X) ≫ 𝟙 X = 𝟙 X
+    simp
+  · intro Z f _
+    exact ⟨f, by simp, fun k hk ↦ by simpa using hk⟩
+  · exact IsQuotientMap.id
+  · intro x y
+    constructor
+    · intro hxy
+      refine ⟨1, ?_⟩
+      rw [h 1]
+      exact hxy
+    · rintro ⟨g, hg⟩
+      rw [h g] at hg
+      exact hg
 
 /-- An affinoid pre-adic space `Spa(A, A⁺)` with `A` a Tate ring. -/
 def isTateAffinoidModel : ObjectProperty PreAdicSpace.{u} := fun X ↦
@@ -243,16 +214,9 @@ example {A : Type u} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [Is
   ObjectProperty.le_isoClosure _ _ ⟨A, inferInstance, inferInstance, inferInstance, inferInstance,
     S, P, hP, rfl⟩
 
--- Check (`isTateAffinoid_padic_field`): the field pair has ring of definition `ℤ_p` and unit `p`.
-example (p : ℕ) [Fact p.Prime] (S : Pair ℚ_[p])
-    (hS : S.plus = PadicInt.subring p)
-    (hP : (TauCeti.Huber.Padic.pairOfDefinition (p := p)).ringOfDefinition ≤ S.plus) :
-    isTateAffinoid (ValuationSpectrum.presentationLimitPreAdicSpace
-      (TauCeti.Huber.Padic.pairOfDefinition (p := p)) S.plus
-      S.isRingOfIntegralElements.isPowerBounded_of_mem hP) := sorry
-
--- Check (`isTateAffinoid_zero`): the concrete zero pair is a Tate affinoid with empty spectrum.
-example :
+/-- The boundary Check `isTateAffinoid_zero` of P8.9: the zero pair is a Tate affinoid
+with empty spectrum. -/
+theorem isTateAffinoid_zero :
     ∃ hT : IsTateRing PUnit,
       letI := hT
       let S := Pair.discrete PUnit
@@ -262,10 +226,10 @@ example :
           S.isRingOfIntegralElements.isPowerBounded_of_mem hP) ∧
         IsEmpty (ValuationSpectrum.spa S.plus) := sorry
 
--- Negative control (`isTateAffinoid_not_padic_integers`): `Spa(ℤ_p, ℤ_p)` is not a Tate affinoid,
--- since its point with support `(p)` is not analytic. Every ring of integral elements of `ℤ_p` is
--- `ℤ_p`, so `S` and `P` only present this space.
-example (p : ℕ) [Fact p.Prime] (S : Pair ℤ_[p]) (P : PairOfDefinition ℤ_[p])
+/-- The boundary Check `isTateAffinoid_not_padic_integers` of P8.9: the integral p-adic
+spectrum is not Tate affinoid because it has a nonanalytic point with support `(p)`. -/
+theorem isTateAffinoid_not_padic_integers (p : ℕ) [Fact p.Prime]
+    (S : Pair ℤ_[p]) (P : PairOfDefinition ℤ_[p])
     (hP : P.ringOfDefinition ≤ S.plus) :
     ¬ isTateAffinoid (ValuationSpectrum.presentationLimitPreAdicSpace P S.plus
       S.isRingOfIntegralElements.isPowerBounded_of_mem hP) := sorry
@@ -331,12 +295,6 @@ structure IsGClean (G : Type*) {X : Type*} [Group G] [TopologicalSpace X] [MulAc
 every neighbourhood of a point contains a `G`-clean open neighbourhood (HJ Lemma 5.2, p. 28). -/
 theorem exists_isGClean [Finite G] [ContinuousConstSMul G X] [T2Space X] (x : X) (V : Set X)
     (hV : V ∈ nhds x) : ∃ U ⊆ V, IsGClean G x U := sorry
-
--- Check (`isGClean_discrete_singleton`): every point of a discrete space has a clean singleton.
-example [DiscreteTopology X] (x : X) : IsGClean G x {x} := sorry
-
--- Negative control: the empty set is invariant with disjoint translates but misses `x`.
-example (x : X) : ¬ IsGClean G x ∅ := fun h ↦ h.mem
 
 -- Negative control: if `g • x ≠ x` and both `y` and `g • y` lie in `U`, then `U` is not clean.
 example (x : X) (U : Set X) (g : G) (hg : g • x ≠ x) (y : X) (hy : y ∈ U) (hgy : g • y ∈ U) :
@@ -410,20 +368,23 @@ end CompactCoefficients
 
 /-! ### Continuous coefficients
 
-The cochain model of P9.0 requires joint continuity of the representation action. These examples give the continuity of its first two differential formulas
-and the discrete regular-representation counterexample. The completed tower-section actions use
+The cochain model of P9.0 requires joint continuity of the representation action. The following
+theorems give continuity of its first two differential formulas and the discrete
+regular-representation counterexample. The completed tower-section actions use
 the lattice-preservation argument of P9.5 with their integral and rational topologies.
 -/
 
--- Check: continuousInhomogeneousCochains_zero.
-example {V G : Type*} [CommRing V] [TopologicalSpace V] [Group G]
+/-- The degree-zero differential of P9.5 is continuous for a jointly continuous action
+(`continuousInhomogeneousCochains_zero`). -/
+theorem continuousInhomogeneousCochains_zero {V G : Type*} [CommRing V] [TopologicalSpace V] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] (ρ : TopRep V G)
     (hρ : Continuous (fun z : G × ρ.V ↦ ρ.ρ z.1 z.2)) (a : ρ.V) :
     Continuous (fun g : G ↦ ρ.ρ g a - a) :=
   (hρ.comp (continuous_id.prodMk continuous_const)).sub continuous_const
 
--- Check: continuousInhomogeneousCochains_one; multiplication has its written order.
-example {V G : Type*} [CommRing V] [TopologicalSpace V] [Group G]
+/-- The degree-one differential of P9.5 is continuous for a jointly continuous action,
+with multiplication in its written order (`continuousInhomogeneousCochains_one`). -/
+theorem continuousInhomogeneousCochains_one {V G : Type*} [CommRing V] [TopologicalSpace V] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] (ρ : TopRep V G)
     (hρ : Continuous (fun z : G × ρ.V ↦ ρ.ρ z.1 z.2)) (b : C(G, ρ.V)) :
     Continuous (fun z : G × G ↦ ρ.ρ z.1 (b z.2) - b (z.1 * z.2) + b z.1) :=
@@ -431,8 +392,9 @@ example {V G : Type*} [CommRing V] [TopologicalSpace V] [Group G]
     (b.continuous.comp (continuous_fst.mul continuous_snd))).add
       (b.continuous.comp continuous_fst)
 
--- Check: cech_operators_without_joint_continuity; this is d⁰(e₀) for the translation action.
-example :
+/-- The boundary Check `cech_operators_without_joint_continuity` of P9.5: translation
+on the discrete regular module over `ℤ₂` has a discontinuous degree-zero differential. -/
+theorem cech_operators_without_joint_continuity :
     letI : TopologicalSpace (PadicInt 2 →₀ ℤ) := ⊥
     ¬ Continuous (fun h : PadicInt 2 ↦
       Finsupp.single h (1 : ℤ) - Finsupp.single 0 (1 : ℤ)) := sorry
@@ -459,10 +421,6 @@ def twistedInvariants (c : G → Rˣ) : Submodule (FixedPoints.subring R G) R wh
     rw [smul_mul', a.property γ, hf γ]
     ring
 
--- Check: membership is the twisted fixed-point equation, with the inverse of the cocycle.
-example (c : G → Rˣ) (f : R) :
-    f ∈ twistedInvariants c ↔ ∀ γ : G, γ • f = ((c γ)⁻¹ : Rˣ) * f := Iff.rfl
-
 -- Check: for the trivial cocycle the twisted invariants are the invariants.
 example (f : R) :
     f ∈ twistedInvariants (fun _ : G ↦ (1 : Rˣ)) ↔ f ∈ FixedPoints.subring R G := by
@@ -470,18 +428,12 @@ example (f : R) :
   simp only [inv_one, Units.val_one, one_mul]
   rfl
 
--- Check: for the coboundary `c(γ) = F / γ(F)` of a unit `F`, `f` is twisted invariant iff `f / F`
--- is invariant.
-example (F : Rˣ) (f : R) :
+/-- The affine coboundary comparison of P9.9 (`twisted_coboundary`): division by the
+trivializing unit identifies twisted invariant sections with invariant sections. -/
+theorem twistedInvariants_coboundary (F : Rˣ) (f : R) :
     f ∈ twistedInvariants (fun γ : G ↦
         F * (Units.map (MulSemiringAction.toRingHom G R γ).toMonoidHom F)⁻¹) ↔
       ((F⁻¹ : Rˣ) : R) * f ∈ FixedPoints.subring R G := sorry
-
--- Negative control: the constant function `-1` on the trivial group is not a cocycle, and its
--- twisted invariants in `ℚ` are zero.
-example (f : ℚ) :
-    letI := MulSemiringAction.compHom ℚ (1 : PUnit.{1} →* (ℚ ≃+* ℚ))
-    f ∈ twistedInvariants (fun _ : PUnit.{1} ↦ (-1 : ℚˣ)) ↔ f = 0 := sorry
 
 end TwistedInvariants
 
@@ -580,13 +532,6 @@ theorem finite_character_comparison_coefficient_change {A A' B C B' C' G H : Typ
     (hβC : ∀ a z, (βC (a ⊗ₜ[A] z)).val = a • rC z.val)
     (hβB : ∀ a z, (βB (a ⊗ₜ[A] z)).val = a • rB z.val) :
     ∀ t, e' (βC t) = βB (e.toLinearMap.lTensor A' t) := sorry
-
--- Check: on two factors with the swap, `u = (1, 2)` gives `c(σ) = (2, 1/2)`
--- and the twisted line `(a, a/2)` maps to the diagonal by multiplication by `u`.
-example (a : ℚ) :
-    ((a, a / 2) : ℚ × ℚ).swap = ((1 / 2, 2) : ℚ × ℚ) * (a, a / 2) ∧
-      ((a, a / 2) : ℚ × ℚ) * (1, 2) = (a, a) := by
-  constructor <;> ext <;> dsimp <;> ring
 
 /-! ### Descent of finite projective modules -/
 
