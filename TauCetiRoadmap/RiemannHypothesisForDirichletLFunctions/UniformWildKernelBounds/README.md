@@ -1068,6 +1068,28 @@ diagonal blocks lie in `X` (resp. `⊕_j Xε′_j`) and off-diagonal blocks in `
 finite set `Σ ⊂ G′` *detects* at the point if every `z ∈ TwZ` over `K[[T]]` at level `0` whose trace functional
 `σ ↦ (η-component of tr(z(σ)ρ¹(σ)))` vanishes on `Σ` is a coboundary up to a power of `T`.
 
+*Classes of Selmer cocycles.* Each of `SelZ`, `SelP`, `SelM`, `Sel1`, `Sel2`, `TwZ` is a group `W` of continuous cocycles of one
+group `G` (`Γ_N` here, `Γ_N⁰` for a frame) with values in one module `𝔞` of matrices, stable under the action: `M_n(X)` for
+`SelZ`, its block-diagonal and block-off-diagonal parts for `SelP` and `SelM`, and the matrices over `DD(X, g)` with blocks in the
+named components for `Sel1`, `Sel2` and `TwZ`. Here `X` is `K[[T]]` or a quotient `K[[T]]/T^m`, `𝔞` has the `T`-adic topology,
+discrete in the second case, and the matrices `Y_v` of the condition at `v | ℓ` are taken in `𝔞`. Write `H¹(G, 𝔞)` for
+`continuousCohomology 1` of `𝔞` (ProfiniteCohomology Conventions, *Cohomology objects*), compared with cocycles modulo
+coboundaries as in ArithmeticGaloisDuality Conventions, *Cohomology*. The *class-level Selmer group* `Wᶜˡ ≤ H¹(G, 𝔞)` is the image
+of `W` under the class map; for the Selmer groups it is written `H¹_𝓛(G, 𝔞)`. By ProfiniteCohomology §2.1 (*Cocycle counts from
+class counts*), `#W = #Wᶜˡ·#(W ⊓ B¹(G, 𝔞))`. The condition at `v | ℓ` is a condition on classes: it holds for `z` exactly when it
+holds for the sum of `z` and the coboundary of an element `A` of `𝔞` (replace `Y_v` by `Y_v + A`), so it is the preimage of a
+subgroup `𝓛_v` of `H¹(G_v, 𝔞)` (of `H¹(D_v, 𝔞)` for a frame). The symmetry `z(g^c) = −ᵗz(g)` and the vanishing on the tame inertia
+are conditions on the cocycle and not on its class: a class lies in `Wᶜˡ` exactly when one of its cocycles lies in `W`. For
+`Sel1`, `Bd1` is the group of coboundaries of the antisymmetric matrices of `𝔞`, and `Sel1 ⊓ B¹(G, 𝔞) = Bd1`: these coboundaries
+lie in `Sel1` ([FormalProof],
+`Development/AutomorphicArithmetic/AutomorphicVarieties/PatchingModules/SeparableMatrixStability/CoboundaryFirstSubsetSelmerFirst.lean`
+(`UpperTheory.V.Pa.coboundary_first_subset_selmer_first`)), and conversely the coboundary of `Y ∈ 𝔞` has the symmetry exactly when
+`Y + ᵗY` is invariant, and is then, `ℓ` being odd, the coboundary of the antisymmetric matrix `(Y − ᵗY)/2` of `𝔞`. So
+`#Sel1 = #Sel1ᶜˡ·#Bd1` when `Sel1` is finite, a bound `#Sel1 ≤ #Bd1·c` is the bound `#Sel1ᶜˡ ≤ c`, and `Sel1` modulo coboundaries
+is
+`Sel1ᶜˡ`. The counts and ranks of (c₀ᶜˡ), (K1′) and (K1) below are stated for `Sel1ᶜˡ`, with the form for the cocycle group `Sel1`
+that [FormalProof] establishes recorded beside them.
+
 *Taylor–Wiles systems of groups.* A *system of local groups* is given by finite sets `V_ℓ`, `S_t` and profinite groups with a
 subgroup, `D_v ⊇ I_v` (`v ∈ V_ℓ`) and `D_u ⊇ J_u` (`u ∈ S_t`). A *frame* over it is a profinite group `Γ` with a character
 `η : Γ → {±1}` of open kernel `Γ⁰`, an element `c` with `c² = 1` and `η(c) = −1`, a continuous character `ε : Γ → ℤ_ℓ^×`, and
@@ -1117,6 +1139,35 @@ level `N` modulo `T^m`, `Sel1` is finite and `#Sel1 ≤ #Bd1·|K|^{m(nd + nq) + 
 `Development/AutomorphicArithmetic/AutomorphicVarieties/PatchingModules/ThetaCoefficientMapEq.lean` (`UpperTheory.V.Pa.TWGrp`),
 `Development/AutomorphicArithmetic/AutomorphicVarieties/PatchingModules/DegreeCountCohomology/IsDualPair.lean`
 (`UpperTheory.V.Pa.ArSys`));
+(c₀ᶜˡ) (*the first count, for classes*) In the setting of (c₀), for a profinite group `G` and a module `M` of `G` write `H⁰(G, M)`
+for the invariants and `H¹(G, M)` for `continuousCohomology 1` of the discrete module `M` (ProfiniteCohomology Conventions,
+*Cohomology objects*); each `D_w` acts on a module of `Γ_N` through its homomorphism to `Γ_N`. Assume for every `N`, in place of
+(GW), (LC) and (UC):
+(GWᶜˡ) for every dual pair `(M, M′)` of `Γ_N` and all subgroups `L_w ≤ H¹(D_w, M)` (`w ∈ W`), the groups `H¹(Γ_N, M)`,
+`H¹(Γ_N, M′)` are finite and
+`#H¹_L(Γ_N, M)·∏_w #H⁰(D_w, M)·∏_{i≤d} #M^{c_{N,i}} ≤ #H⁰(Γ_N, M)·#H¹_{L*}(Γ_N, M′)·∏_w #L_w`,
+where `H¹_L(Γ_N, M)` is the group of classes whose restriction to `D_w` lies in `L_w` for every `w`, and `H¹_{L*}(Γ_N, M′)` the
+group of classes whose restriction to `D_w` is zero for every `w` with `L_w = H¹(D_w, M)`;
+(LCᶜˡ) for every `w ∈ W` and every dual pair `(M, M′)` of `D_w`: `#H¹(D_w, M) = #H⁰(D_w, M)·#H⁰(D_w, M′)·(#M)^{d_w}`, with `d_w`
+as in (LC);
+(UCᶜˡ) for every `u ∈ S_t` and every module `M` of `D_u` killed by `ℓ` on which `J_u` acts trivially:
+`#H¹_{ur}(D_u, M) = #H⁰(D_u, M)`, where `H¹_{ur}(D_u, M)` is the group of classes of the cocycles vanishing on `J_u`.
+Assume (split) and (Φ), and let `ρ` be as in (c₀). Then there is `C` such that for every `m`, for all large `N`, at level `N`
+modulo `T^m`, `Sel1ᶜˡ` is finite and `#Sel1ᶜˡ ≤ |K|^{m(nd + nq) + C}`. This is (c₀) read through ProfiniteCohomology §2.1
+(*Cocycle counts from class counts*), by which a subgroup `B¹ ⊆ 𝓛 ⊆ Z¹(G, M)` with image `L` in `H¹(G, M)` has
+`#𝓛·#H⁰(G, M) = #L·#M`. The subgroups `𝓛_w` of (GW) are the preimages of the subgroups `L_w`, with `𝓛_w = Z¹(D_w, M)` exactly when
+`L_w = H¹(D_w, M)`; the two sets of cocycles of (GW) are the preimages of `H¹_L(Γ_N, M)` and `H¹_{L*}(Γ_N, M′)`; and
+`#B¹(Γ_N, M′)·#H⁰(Γ_N, M′) = #M′`. Substituting, the factors `#M·#M′·(#M)^{#W}` and `#H⁰(Γ_N, M′)` occur on both sides of (GW),
+which is therefore (GWᶜˡ). In the same way (LC) is (LCᶜˡ); (UC) is (UCᶜˡ), the coboundaries vanishing on `J_u` because `J_u` acts trivially; and the conclusions
+agree by `#Sel1 = #Sel1ᶜˡ·#Bd1` (*Classes of Selmer cocycles*). The route uses (c₀), whose route is not given in full (see there).
+*Checks of (GWᶜˡ).* Take `Γ_N = G_{ℚ,{ℓ,∞}}`, `ε = χ_ℓ`, `W = {ℓ}` with `D_ℓ = G_{ℚ_ℓ}`, `d = 1` and `c_{N,1}` a complex
+conjugation. For `M = 𝔽_ℓ`, `M′ = μ_ℓ` and `L_ℓ = H¹(D_ℓ, 𝔽_ℓ)`, of order `ℓ²` by (LCᶜˡ): `H¹_L` is `Hom(Γ_N, 𝔽_ℓ)`, of order `ℓ`,
+and `#H⁰(D_ℓ, M) = #M^c = ℓ`, so the left side is `ℓ³`; `H¹(Γ_N, μ_ℓ)` is `ℤ[1/ℓ]^×` modulo `ℓ`-th powers, generated by `ℓ`, which
+is not an `ℓ`-th power in `ℚ_ℓ`, so `H¹_{L*} = 0` and the right side is `ℓ·1·ℓ² = ℓ³`. For `M = μ_ℓ`, `M′ = 𝔽_ℓ` and
+`L_ℓ = H¹(D_ℓ, μ_ℓ)`, of order `ℓ²`: `H¹_L` has order `ℓ` and `H⁰(D_ℓ, M)`, `M^c` and `H⁰(Γ_N, M)` are zero, so the left side is `ℓ`;
+`H¹_{L*}` consists of the homomorphisms `Γ_N → 𝔽_ℓ` trivial on `D_ℓ` and is zero, the `ℤ/ℓ`-extension of `ℚ` unramified outside
+`ℓ` being totally ramified at `ℓ`, so the right side is `ℓ²`. The quotient `ℓ` of the two sides is `#H⁰(Γ_N, M′)`, the term of the
+Greenberg–Wiles formula that (GWᶜˡ) does not carry;
 (c₀′) (*the obstruction bound for a Taylor–Wiles system of groups*) Let `ℓ` be odd, `Γ₀` a frame with a Taylor–Wiles system and
 `d ≥ 0`. In this clause a module is a finite discrete module with continuous action, killed by `ℓ`, and `H^i` is continuous
 cohomology. A frame `Γ` *has the cohomology of degree `d`* if there are integers `d_v ≥ 0` (`v ∈ V_ℓ`) with `Σ_v d_v = d` such
@@ -1136,14 +1187,14 @@ If `Γ₀` and every `Γ_N` have the cohomology of degree `d`, then for every no
 (`UpperTheory.V.Pa.B2.obstructionBound_of_duality`),
 `Development/AutomorphicArithmetic/AutomorphicVarieties/PatchingModules/ArchimedeanH0Cards/PushforwardPreservesSelmerCocycles.lean`
 (`UpperTheory.V.Pa.B2.CohAx`)) ((c₀), (c₀′): theorems of [FormalProof] whose route is not given here, outlined in the Route of
-(c));
+(c); (c₀ᶜˡ) is this roadmap's form of (c₀));
 (c) (*the three Selmer counts*) (K1′) and (K2′) are (c₀) and (c₀′) for the Galois groups of the Taylor–Wiles levels; (K1)–(K3)
 follow from them: at a normalized point with (N1), (N3), (N4) and Taylor–Wiles elements `σ₁, …, σ_q ∈ G′` at which `ρ` has `n` distinct
 eigenvalues and which detect, with `D₀ := nd + nq`, there is `C` such that for all `m` and all large `N`, at level `N` and modulo
-`T^m`: (K1′) `#Sel1 ≤ #Bd1·|K|^{mD₀ + C}`, `Bd1` its coboundaries; (K2′)
+`T^m`: (K1′) `#Sel1ᶜˡ ≤ |K|^{mD₀ + C}`, in the form of [FormalProof] `#Sel1 ≤ #Bd1·|K|^{mD₀ + C}`, `Bd1` its coboundaries; (K2′)
 among any `g + 1` families `(z_{i,j})_j ∈ SelP^g` some combination with a unit coefficient is, up to `T^C`, the `ε′`-part of an
 element of `Sel2` (the map `SelP^g → H²(off-diagonal)`, `(z_j) ↦ Σ_j κ_j ∪ z_j`, has rank `≤ g` up to `T^C`); and over the limit group
-of ReducibilityIdealsAndUltrafilterPatching §6.13(1): (K1) `Sel1` modulo coboundaries has rank `≤ D₀`, (K2) among any `g + 1`
+of ReducibilityIdealsAndUltrafilterPatching §6.13(1): (K1) `Sel1ᶜˡ`, that is `Sel1` modulo coboundaries, has rank `≤ D₀`, (K2) among any `g + 1`
 families in `SelP^g` over `K[[T]]`, some combination with coefficients in `K[[T]]`, not all zero, is the `ε′`-part of an element
 of `Sel2`; (K3) every element of `SelM` is, after multiplication by a power of `T` and modulo coboundaries, a combination of
 the `κ_j`; (d) (*detection*) let `F` be a field with `2 ≠ 0`, `G ⊃ G′ ⊃ [G, G]` groups, `χ` a nontrivial character of `G/G′`,
@@ -1195,10 +1246,14 @@ complex conjugation, the decomposition and inertia groups at the places above `�
 `S` with `J_u` the inertia killed by the `χ̄_i`, and `H` the common kernel of the `χ̄_i` and of `ω` in `G_{L,S}`; a Taylor–Wiles
 datum (HeckeIdealsAndTaylorWilesRelations §4.2a) gives a Taylor–Wiles system with `q_{N,j} = Nw_{N,j}`. For (c₀): `D_{N,0}` and the
 `D_{N,j}` are the decomposition groups at `v₀` and at the `w_{N,j}`, `Δ` is the decomposition group at `v₀`, the `c_{N,i}` are the
-`d = [L⁺:ℚ]` complex conjugations and `d_v = [L⁺_v:ℚ_ℓ]`; (GW) is the Greenberg–Wiles formula (ArithmeticGaloisDuality R02.5.1)
-written for cocycles, with the finiteness of ArithmeticGaloisDuality R02.4.4; (LC) is local Tate duality with the local Euler
-characteristic (ClassFieldTheory Layer 5, ArithmeticGaloisDuality R02.4.2); (UC) is the count of unramified classes
-(ArithmeticGaloisDuality R02.4.2), the inertia acting through a quotient of order prime to `ℓ`; (split) is local class field
+`d = [L⁺:ℚ]` complex conjugations and `d_v = [L⁺_v:ℚ_ℓ]`. The hypotheses are supplied in the class form of (c₀ᶜˡ). (GWᶜˡ) is *The
+Greenberg–Wiles formula* (ArithmeticGaloisDuality R02.5.1) for the conditions `L_w`, with the finiteness of
+ArithmeticGaloisDuality R02.4.4: a real place contributes the factor `1/#M^{c_{N,i}}`, since `H¹` of a group of order two with
+values in a module of odd order is zero; the dual Selmer group lies in `H¹_{L*}(Γ_N, M′)`, since `L_w^⊥ = 0` when
+`L_w = H¹(D_w, M)`; and `#H⁰(Γ_N, M′) ≥ 1`. (GW) is its form for cocycles, by the substitutions of ArithmeticGaloisDuality R02.5.1
+(*Cocycle form*). (LCᶜˡ) is local Tate duality with the local Euler characteristic (ClassFieldTheory Layer 5, ArithmeticGaloisDuality
+R02.4.2), and (UCᶜˡ) is the count of unramified classes (ArithmeticGaloisDuality R02.4.2), the inertia acting through a quotient
+of order prime to `ℓ`; (LC) and (UC) are their forms for cocycles (ProfiniteCohomology §2.1, *Cocycle counts from class counts*). (split) is local class field
 theory (ClassFieldTheory Layer 7); (Φ) follows from ArithmeticGaloisDuality R02.4.4 ([FormalProof],
 `Development/AutomorphicArithmetic/AutomorphicVarieties/PatchingModules/AutomorphicDetection/ArPl.lean` (`UpperTheory.V.Pa.arPl`),
 `Development/AutomorphicArithmetic/AutomorphicVarieties/PatchingModules/DegreeCountCohomology/ArSys.lean`
@@ -4069,7 +4124,7 @@ Additions to PotentialAutomorphyInfrastructurePartII: §3.13a (the universal ord
 
 ### From TauCetiRoadmap.ArithmeticGaloisDuality
 
-R02.1.3 (lattices, rational and torsion coefficients). R02.3.3 (*The Kummer sequence for S-units*, in step (4) of 6.5). R02.4.3 (Poitou–Tate at finite level). D7.7 (dual local conditions with torsion coefficients). R02.4.2 (local Tate duality and the local Euler characteristic, in 4.1 (local chart) and 3.15(c)). R02.4.4 (finiteness, cohomological dimension and Tate's global Euler characteristic formula, in 3.15(c)). R02.5.1 (the Greenberg–Wiles formula, from which the Euler characteristic counts of 3.11, 3.14, 3.18, 3.19, 3.20(b), (c), 3.21, 4.1, 4.4 and the counts of 3.15 follow).
+R02.1.3 (lattices, rational and torsion coefficients). R02.3.3 (*The Kummer sequence for S-units*, in step (4) of 6.5). R02.4.3 (Poitou–Tate at finite level). D7.7 (dual local conditions with torsion coefficients). R02.4.2 (local Tate duality and the local Euler characteristic, in 4.1 (local chart) and 3.15(c)). R02.4.4 (finiteness, cohomological dimension and Tate's global Euler characteristic formula, in 3.15(c)). R02.5.1 (*The Greenberg–Wiles formula* and its *Cocycle form*, from which the Euler characteristic counts of 3.11, 3.14, 3.18, 3.19, 3.20(b), (c), 3.21, 4.1, 4.4 and the counts of 3.15 follow).
 
 ### From TauCetiRoadmap.IntegralIwasawaTheory
 
@@ -4192,7 +4247,7 @@ Layer 10 (Chebotarev density), for the Taylor–Wiles places of 3.15, the auxili
 
 ### From TauCetiRoadmap.ProfiniteCohomology
 
-§5.4 (inflation–restriction), in 1.1, 3.5 and 6.5; §§9.5–9.6 (Hilbert 90 and Kummer theory), in 5.2 and 6.5; Layer 11 (cohomological dimension), in 1.1.
+§5.4 (inflation–restriction), in 1.1, 3.5 and 6.5; §§9.5–9.6 (Hilbert 90 and Kummer theory), in 5.2 and 6.5; Layer 11 (cohomological dimension), in 1.1; Conventions (*Cohomology objects*, *Counting*) and §2.1 (*Cocycle counts from class counts*), in 3.15.
 
 ### From TauCetiRoadmap.LFunctions
 
